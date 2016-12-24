@@ -13,7 +13,7 @@ namespace LiftApplication
         private const int MaxFloor = 30;
         private const int MiniFloor = -2;
 
-        private IList<LiftStatus> lifts = new List<LiftStatus>()
+        private readonly IList<LiftStatus> _lifts = new List<LiftStatus>()
         {
             new LiftStatus()
             {
@@ -39,7 +39,7 @@ namespace LiftApplication
 
         public void RetrieveAndChangeLiftStatus()
         {
-            foreach (var liftStatus in lifts)
+            foreach (var liftStatus in _lifts)
             {
                 //Todo: deal with sad path
                 if (IsLiftInLegalStatus(liftStatus))
@@ -51,7 +51,18 @@ namespace LiftApplication
 
         public LiftStatus CheckLiftStatus(int liftId)
         {
-            return lifts.FirstOrDefault(x => x.Lift.ID == liftId);
+            return _lifts.FirstOrDefault(x => x.Lift.ID == liftId);
+        }
+
+        public void AddDestionFloor(int liftId, int floor)
+        {
+            foreach (var liftStatus in _lifts)
+            {
+                if (floor <= MaxFloor && floor >= MiniFloor)
+                {
+                    liftStatus.DestinationFloor = floor;
+                }
+            }
         }
 
         private void updateLiftStatus(LiftStatus liftStatus)
