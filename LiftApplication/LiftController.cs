@@ -49,15 +49,21 @@ namespace LiftApplication
             }
         }
 
+        public IList<LiftStatus> GetAllLifts()
+        {
+            return _lifts;
+        } 
+
         public LiftStatus CheckLiftStatus(int liftId)
         {
             return _lifts.FirstOrDefault(x => x.Lift.ID == liftId);
         }
 
-        public void AddDestionFloor(int liftId, int floor)
+        public void AddDestinationFloor(int liftId, int floor)
         {
             foreach (var liftStatus in _lifts)
             {
+                //Todo: deal with sad path
                 if (floor <= MaxFloor && floor >= MiniFloor)
                 {
                     liftStatus.DestinationFloor = floor;

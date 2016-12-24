@@ -45,6 +45,7 @@
     <Compile Include="LiftController.cs" />
     <Compile Include="LiftMotionStatus.cs" />
     <Compile Include="LiftStatus.cs" />
+    <Compile Include="LiftView.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
