@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace LiftApplication
 {
-    public class Program
+    public enum LiftMotionStatus
     {
-        static void Main(string[] args)
-        {
-
-        }
+        Up,
+        Down,
+        Still,
+        Suspend,
+        Broke,
+        OnHold
     }
 }

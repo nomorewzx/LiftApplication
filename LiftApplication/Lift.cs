@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace LiftApplication
 {
-    public class Program
+    public class Lift
     {
-        static void Main(string[] args)
-        {
-
-        }
+        public int ID { get; set; }
     }
 }
