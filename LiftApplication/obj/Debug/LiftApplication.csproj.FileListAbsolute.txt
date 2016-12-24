@@ -1,0 +1,6 @@
+\\mac\home\documents\visual studio 2013\Projects\LiftApplication\LiftApplication\bin\Debug\LiftApplication.exe.config
+\\mac\home\documents\visual studio 2013\Projects\LiftApplication\LiftApplication\bin\Debug\LiftApplication.exe
+\\mac\home\documents\visual studio 2013\Projects\LiftApplication\LiftApplication\bin\Debug\LiftApplication.pdb
+\\mac\home\documents\visual studio 2013\Projects\LiftApplication\LiftApplication\obj\Debug\LiftApplication.csprojResolveAssemblyReference.cache
+\\mac\home\documents\visual studio 2013\Projects\LiftApplication\LiftApplication\obj\Debug\LiftApplication.exe
+\\mac\home\documents\visual studio 2013\Projects\LiftApplication\LiftApplication\obj\Debug\LiftApplication.pdb
