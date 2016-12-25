@@ -12,7 +12,6 @@ namespace LiftApplication
         {
             var liftView = new LiftView();
             liftView.RetrieveAndShowLiftStatus();
-            Console.ReadLine();
         }
     }
 }

@@ -10,10 +10,12 @@ namespace LiftApplication
     public class LiftView
     {
         private LiftController liftController;
+        private UserInputHandler userInputHandler;
 
         public LiftView()
         {
             liftController = new LiftController();
+            userInputHandler = new UserInputHandler();
         }
 
         public void ShowLiftStatus()
@@ -30,13 +32,18 @@ namespace LiftApplication
             liftController.AddDestinationFloor(1, 24);
             liftController.RetrieveAndChangeLiftStatus();
 
-            while (!liftController.CheckAllLiftsInStillStatus())
+            while (true)
             {
+                if (liftController.CheckAllLiftsInStillStatus())
+                {
+                    var inputs = userInputHandler.HandleInputInsideLift();
+                    liftController.AddDestinationFloor(inputs[0], inputs[1]);
+                }
+
                 Thread.Sleep(1000);
                 liftController.RetrieveAndChangeLiftStatus();
                 ShowLiftStatus();
             }
-
         }
     }
 }
