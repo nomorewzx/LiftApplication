@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LiftApplication
@@ -20,8 +21,22 @@ namespace LiftApplication
             var lifts = liftController.GetAllLifts();
             foreach (var liftStatus in lifts)
             {
-                Console.WriteLine("The lift " + liftStatus.Lift.ID + " is now on " + liftStatus.CurrentFloor +" floor. Going " + liftStatus.MontionStatus);                
+                Console.WriteLine("Lift: " + liftStatus.Lift.ID + " ON: " + liftStatus.CurrentFloor +" f. Going: " + liftStatus.MontionStatus);                
             }
+        }
+
+        public void RetrieveAndShowLiftStatus()
+        {
+            liftController.AddDestinationFloor(1, 24);
+            liftController.RetrieveAndChangeLiftStatus();
+
+            while (!liftController.CheckAllLiftsInStillStatus())
+            {
+                Thread.Sleep(1000);
+                liftController.RetrieveAndChangeLiftStatus();
+                ShowLiftStatus();
+            }
+
         }
     }
 }

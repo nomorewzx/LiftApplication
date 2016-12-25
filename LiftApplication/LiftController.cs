@@ -64,11 +64,16 @@ namespace LiftApplication
             foreach (var liftStatus in _lifts)
             {
                 //Todo: deal with sad path
-                if (floor <= MaxFloor && floor >= MiniFloor)
+                if ( liftStatus.Lift.ID == liftId &&floor <= MaxFloor && floor >= MiniFloor)
                 {
                     liftStatus.DestinationFloor = floor;
                 }
             }
+        }
+
+        public bool CheckAllLiftsInStillStatus()
+        {
+            return _lifts.All(x => x.MontionStatus == LiftMotionStatus.Still);
         }
 
         private void updateLiftStatus(LiftStatus liftStatus)
@@ -78,7 +83,7 @@ namespace LiftApplication
             //Todo: If we only have one destination floor, the liftStatus.MotionStatus will be useless, but we will store more than one destination floor.
             //Todo: so keep the liftStatus.MotionStatus right here for now!
 
-            var shouldMotionStatusChangeTo = LiftMotionStatus.OnHold;
+            var shouldMotionStatusChangeTo = LiftMotionStatus.Still;
 
             if (flag > 0)
             {
@@ -90,7 +95,7 @@ namespace LiftApplication
             }
             else
             {
-                shouldMotionStatusChangeTo = LiftMotionStatus.OnHold;
+                shouldMotionStatusChangeTo = LiftMotionStatus.Still;
             }
 
             liftStatus.MontionStatus = shouldMotionStatusChangeTo;

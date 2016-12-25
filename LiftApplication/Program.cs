@@ -11,7 +11,7 @@ namespace LiftApplication
         static void Main(string[] args)
         {
             var liftView = new LiftView();
-            liftView.ShowLiftStatus();
+            liftView.RetrieveAndShowLiftStatus();
             Console.ReadLine();
         }
     }
