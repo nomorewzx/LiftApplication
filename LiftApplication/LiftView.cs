@@ -29,9 +29,7 @@ namespace LiftApplication
 
         public void RetrieveAndShowLiftStatus()
         {
-            liftController.AddDestinationFloor(1, 24);
-            liftController.RetrieveAndChangeLiftStatus();
-
+            ShowLiftStatus();
             while (true)
             {
                 if (liftController.CheckAllLiftsInStillStatus())

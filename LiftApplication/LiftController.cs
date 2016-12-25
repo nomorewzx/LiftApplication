@@ -17,23 +17,23 @@ namespace LiftApplication
         {
             new LiftStatus()
             {
-                CurrentFloor = 0,
+                CurrentFloor = 1,
                 Lift = new Lift()
                 {
                     ID = 1
                 },
                 MontionStatus = LiftMotionStatus.Still,
-                DestinationFloor = 0
+                DestinationFloor = 1
             },
             new LiftStatus()
             {
-                CurrentFloor = 0,
+                CurrentFloor = 1,
                 Lift = new Lift()
                 {
                     ID = 2
                 },
                 MontionStatus = LiftMotionStatus.Still,
-                DestinationFloor = 0
+                DestinationFloor = 1
             }
         };
 
@@ -49,14 +49,14 @@ namespace LiftApplication
             }
         }
 
+        public bool CheckIsFloorRight(int floor)
+        {
+            return floor <= MaxFloor && floor >= MiniFloor && floor != 0;
+        }
+
         public IList<LiftStatus> GetAllLifts()
         {
             return _lifts;
-        } 
-
-        public LiftStatus CheckLiftStatus(int liftId)
-        {
-            return _lifts.FirstOrDefault(x => x.Lift.ID == liftId);
         }
 
         public void AddDestinationFloor(int liftId, int floor)
@@ -64,7 +64,7 @@ namespace LiftApplication
             foreach (var liftStatus in _lifts)
             {
                 //Todo: deal with sad path
-                if ( liftStatus.Lift.ID == liftId &&floor <= MaxFloor && floor >= MiniFloor)
+                if (liftStatus.Lift.ID == liftId && CheckIsFloorRight(floor))
                 {
                     liftStatus.DestinationFloor = floor;
                 }
@@ -103,13 +103,34 @@ namespace LiftApplication
             switch (liftStatus.MontionStatus)
             {
                 case LiftMotionStatus.Up:
-                    liftStatus.CurrentFloor += 1;
+                    liftStatus.CurrentFloor = GetUpperOneFloor(liftStatus.CurrentFloor);
                     break;
                 case LiftMotionStatus.Down:
-                    liftStatus.CurrentFloor -= 1;
+                    liftStatus.CurrentFloor = GetLowerFloor(liftStatus.CurrentFloor);
                     break;
             }
             
+        }
+
+        private int GetLowerFloor(int currentFloor)
+        {
+            var lowerOneFloor = currentFloor - 1 == 0 ? -1 : currentFloor - 1;
+            if (CheckIsFloorRight(lowerOneFloor))
+            {
+                return lowerOneFloor;
+            }
+            return currentFloor;
+        }
+
+        private int GetUpperOneFloor(int currentFloor)
+        {
+            var upperOneFloor = currentFloor + 1 == 0 ? 1 : currentFloor + 1;
+            if (CheckIsFloorRight(upperOneFloor))
+            {
+                return upperOneFloor;
+            }
+
+            return currentFloor;
         }
 
         private bool IsLiftInLegalStatus(LiftStatus liftStatus)
