@@ -13,72 +13,67 @@ namespace LiftApplication
         private const int MaxFloor = 30;
         private const int MiniFloor = -2;
 
-        private readonly IList<LiftStatus> _lifts = new List<LiftStatus>()
+        private readonly IList<Lift> _lifts = new List<Lift>()
         {
-            new LiftStatus()
+            new Lift()
             {
-                CurrentFloor = 1,
-                Lift = new Lift()
+                Id = 1,
+                LiftStatus = new LiftStatus()
                 {
-                    ID = 1
-                },
-                MontionStatus = LiftMotionStatus.Still,
-                DestinationFloor = 1
+                    CurrentFloor = 1,
+                    MontionStatus = LiftMotionStatus.Still,
+                    DestinationFloor = 1
+                }
             },
-            new LiftStatus()
+            new Lift()
             {
-                CurrentFloor = 1,
-                Lift = new Lift()
+                Id = 2,
+                LiftStatus = new LiftStatus()
                 {
-                    ID = 2
-                },
-                MontionStatus = LiftMotionStatus.Still,
-                DestinationFloor = 1
+                    CurrentFloor = 1,
+                    MontionStatus = LiftMotionStatus.Still,
+                    DestinationFloor = 1
+                }
             }
         };
 
         public void RetrieveAndChangeLiftStatus()
         {
-            foreach (var liftStatus in _lifts)
+            foreach (var lift in _lifts)
             {
                 //Todo: deal with sad path
-                if (IsLiftInLegalStatus(liftStatus))
+                if (IsLiftInLegalFloor(lift))
                 {
-                    updateLiftStatus(liftStatus);
+                    UpdateLiftStatus(lift);
                 }
             }
         }
 
-        public bool CheckIsFloorRight(int floor)
-        {
-            return floor <= MaxFloor && floor >= MiniFloor && floor != 0;
-        }
-
-        public IList<LiftStatus> GetAllLifts()
+        public IList<Lift> GetAllLifts()
         {
             return _lifts;
         }
 
         public void AddDestinationFloor(int liftId, int floor)
         {
-            foreach (var liftStatus in _lifts)
+            foreach (var lift in _lifts)
             {
                 //Todo: deal with sad path
-                if (liftStatus.Lift.ID == liftId && CheckIsFloorRight(floor))
+                if ( lift.Id == liftId && CheckIsFloorRight(floor))
                 {
-                    liftStatus.DestinationFloor = floor;
+                    lift.LiftStatus.DestinationFloor = floor;
                 }
             }
         }
 
         public bool CheckAllLiftsInStillStatus()
         {
-            return _lifts.All(x => x.MontionStatus == LiftMotionStatus.Still);
+            return _lifts.All(x => x.LiftStatus.MontionStatus == LiftMotionStatus.Still);
         }
 
-        private void updateLiftStatus(LiftStatus liftStatus)
+        private void UpdateLiftStatus(Lift lift)
         {
-            var flag = liftStatus.DestinationFloor - liftStatus.CurrentFloor;
+            var flag = lift.LiftStatus.DestinationFloor - lift.LiftStatus.CurrentFloor;
 
             //Todo: If we only have one destination floor, the liftStatus.MotionStatus will be useless, but we will store more than one destination floor.
             //Todo: so keep the liftStatus.MotionStatus right here for now!
@@ -98,21 +93,21 @@ namespace LiftApplication
                 shouldMotionStatusChangeTo = LiftMotionStatus.Still;
             }
 
-            liftStatus.MontionStatus = shouldMotionStatusChangeTo;
+            lift.LiftStatus.MontionStatus = shouldMotionStatusChangeTo;
 
-            switch (liftStatus.MontionStatus)
+            switch (lift.LiftStatus.MontionStatus)
             {
                 case LiftMotionStatus.Up:
-                    liftStatus.CurrentFloor = GetUpperOneFloor(liftStatus.CurrentFloor);
+                    lift.LiftStatus.CurrentFloor = GetUpperNextFloor(lift.LiftStatus.CurrentFloor);
                     break;
                 case LiftMotionStatus.Down:
-                    liftStatus.CurrentFloor = GetLowerFloor(liftStatus.CurrentFloor);
+                    lift.LiftStatus.CurrentFloor = GetLowerNextFloor(lift.LiftStatus.CurrentFloor);
                     break;
             }
             
         }
 
-        private int GetLowerFloor(int currentFloor)
+        private int GetLowerNextFloor(int currentFloor)
         {
             var lowerOneFloor = currentFloor - 1 == 0 ? -1 : currentFloor - 1;
             if (CheckIsFloorRight(lowerOneFloor))
@@ -122,7 +117,7 @@ namespace LiftApplication
             return currentFloor;
         }
 
-        private int GetUpperOneFloor(int currentFloor)
+        private int GetUpperNextFloor(int currentFloor)
         {
             var upperOneFloor = currentFloor + 1 == 0 ? 1 : currentFloor + 1;
             if (CheckIsFloorRight(upperOneFloor))
@@ -133,10 +128,15 @@ namespace LiftApplication
             return currentFloor;
         }
 
-        private bool IsLiftInLegalStatus(LiftStatus liftStatus)
+        private bool IsLiftInLegalFloor(Lift lift)
         {
-            return liftStatus.CurrentFloor <= MaxFloor && liftStatus.CurrentFloor >= MiniFloor &&
-                   liftStatus.DestinationFloor <= MaxFloor && liftStatus.DestinationFloor >= MiniFloor;
+            return CheckIsFloorRight(lift.LiftStatus.CurrentFloor) &&
+                   CheckIsFloorRight(lift.LiftStatus.DestinationFloor);
+        }
+
+        public bool CheckIsFloorRight(int floor)
+        {
+            return floor <= MaxFloor && floor >= MiniFloor && floor != 0;
         }
     }
 }

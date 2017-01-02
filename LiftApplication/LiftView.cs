@@ -9,21 +9,21 @@ namespace LiftApplication
 {
     public class LiftView
     {
-        private LiftController liftController;
-        private UserInputHandler userInputHandler;
+        private readonly LiftController _liftController;
+        private readonly UserInputHandler _userInputHandler;
 
         public LiftView()
         {
-            liftController = new LiftController();
-            userInputHandler = new UserInputHandler();
+            _liftController = new LiftController();
+            _userInputHandler = new UserInputHandler();
         }
 
         public void ShowLiftStatus()
         {
-            var lifts = liftController.GetAllLifts();
-            foreach (var liftStatus in lifts)
+            var lifts = _liftController.GetAllLifts();
+            foreach (var lift in lifts)
             {
-                Console.WriteLine("Lift: " + liftStatus.Lift.ID + " ON: " + liftStatus.CurrentFloor +" f. Going: " + liftStatus.MontionStatus);                
+                Console.WriteLine("Lift: " + lift.Id + " ON: " + lift.LiftStatus.CurrentFloor +" f. Going: " + lift.LiftStatus.MontionStatus);                
             }
         }
 
@@ -32,14 +32,14 @@ namespace LiftApplication
             ShowLiftStatus();
             while (true)
             {
-                if (liftController.CheckAllLiftsInStillStatus())
+                if (_liftController.CheckAllLiftsInStillStatus())
                 {
-                    var inputs = userInputHandler.HandleInputInsideLift();
-                    liftController.AddDestinationFloor(inputs[0], inputs[1]);
+                    var inputs = _userInputHandler.HandleInputInsideLift();
+                    _liftController.AddDestinationFloor(inputs[0], inputs[1]);
                 }
 
                 Thread.Sleep(1000);
-                liftController.RetrieveAndChangeLiftStatus();
+                _liftController.RetrieveAndChangeLiftStatus();
                 ShowLiftStatus();
             }
         }
