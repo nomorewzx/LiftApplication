@@ -35,7 +35,7 @@ namespace LiftApplication
                 if (_liftController.CheckAllLiftsInStillStatus())
                 {
                     var inputs = _userInputHandler.HandleInputInsideLift();
-                    _liftController.AddDestinationFloor(inputs[0], inputs[1]);
+                    _liftController.AddDestinationFloors(inputs);
                 }
 
                 Thread.Sleep(1000);

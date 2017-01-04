@@ -10,6 +10,6 @@ namespace LiftApplication
     {
         public int CurrentFloor { get; set; }
         public LiftMotionStatus MontionStatus { get; set; }
-        public int DestinationFloor { get; set; }
+        public List<int> DestinationFloors { get; set; }
     }
 }
